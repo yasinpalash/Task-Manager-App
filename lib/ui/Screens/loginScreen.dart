@@ -36,59 +36,59 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
-          child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Get Started With',
-                style: screenTitleTextStyle,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              AppTextFormFieldWidget(
-                hintText: 'Email',
-                controller: emailTextController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Enter your valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              AppTextFormFieldWidget(
-                obscureText: true,
-                hintText: 'Password',
-                controller: passwordTextController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Enter your valid password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              if (_loginController.LoginInProgress)
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
-              else
-                SizedBox(
-                  width: double.infinity,
-                  child: GetBuilder<LoginController>(
-                    builder: (loginController) {
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Get Started With',
+                  style: screenTitleTextStyle,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                AppTextFormFieldWidget(
+                  hintText: 'Email',
+                  controller: emailTextController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Enter your valid email';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                AppTextFormFieldWidget(
+                  obscureText: true,
+                  hintText: 'Password',
+                  controller: passwordTextController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Enter your valid password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                if (_loginController.LoginInProgress)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  SizedBox(
+                    width: double.infinity,
+                    child:
+                        GetBuilder<LoginController>(builder: (loginController) {
                       return Visibility(
-                        visible: loginController.LoginInProgress==false,
+                        visible: loginController.LoginInProgress == false,
                         replacement: const Center(
                           child: CircularProgressIndicator(),
                         ),
@@ -101,41 +101,41 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                       );
-                    }
+                    }),
+                  ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Center(
+                  child: TextButton(
+                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const VerifyWithEmail()));
+                    },
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ),
                 ),
-              const SizedBox(
-                height: 16,
-              ),
-              Center(
-                child: TextButton(
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () {
+                AppTextButton(
+                  text1: "Don't Have an Account?",
+                  text2: 'Sign up',
+                  ontap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const VerifyWithEmail()));
+                            builder: (context) => const SignUpScreen()));
                   },
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              ),
-              AppTextButton(
-                text1: "Don't Have an Account?",
-                text2: 'Sign up',
-                ontap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()));
-                },
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

@@ -26,32 +26,33 @@ class _InprogressTaskScreenState extends State<InprogressTaskScreen> {
   }
 
   Future<void> deleteTask(dynamic id) async {
-    showDialog(context: context, builder: (context){
-
-      return AlertDialog(
-        title: const Text('Delete !'),
-        content: const Text("Once delete, you won't be get it back"),
-        actions: [
-          OutlinedButton(onPressed: () async {
-            Navigator.pop(context);
-            inProgress = true;
-            setState(() {});
-            await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
-            inProgress = false;
-            setState(() {});
-            inProgressTasks();
-
-          }, child: const Text('Yes')),
-          OutlinedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text('No')),
-
-        ],
-
-      );
-
-    });
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete !'),
+          content: const Text("Once delete, you won't be get it back"),
+          actions: [
+            OutlinedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  inProgress = true;
+                  setState(() {});
+                  await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
+                  inProgress = false;
+                  setState(() {});
+                  inProgressTasks();
+                },
+                child: const Text('Yes')),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> inProgressTasks() async {
@@ -79,43 +80,44 @@ class _InprogressTaskScreenState extends State<InprogressTaskScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: inProgress
-                      ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                      : RefreshIndicator(
-                    onRefresh: () async {
-                      inProgressTasks();
-                    },
-                    child: ListView.builder(
-                        itemCount: inProgressTaskModel.data?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return TaskListItem(
-                            subject:
-                            inProgressTaskModel.data?[index].title ??
-                                'Unknown',
-                            description: inProgressTaskModel
-                                .data?[index].description ??
-                                'Unknown',
-                            date: inProgressTaskModel
-                                .data?[index].createdDate ??
-                                'Unknown',
-                            type: 'Progress',
-                            backgroundColor: Colors.purple,
-                            onEdit: () {
-                              showChangedTaskStatus(
-                                  'Progress',
-                                  inProgressTaskModel.data?[index].sId ??
-                                      '', () {
-                                inProgressTasks();
-                              });
-                            },
-                            onDelete: () {
-                              deleteTask(inProgressTaskModel.data?[index].sId);
-                            },
-                          );
-                        }),
-                  )),
+                child: inProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          inProgressTasks();
+                        },
+                        child: ListView.builder(
+                          itemCount: inProgressTaskModel.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return TaskListItem(
+                              subject: inProgressTaskModel.data?[index].title ??
+                                  'Unknown',
+                              description: inProgressTaskModel
+                                      .data?[index].description ??
+                                  'Unknown',
+                              date: inProgressTaskModel
+                                      .data?[index].createdDate ??
+                                  'Unknown',
+                              type: 'Progress',
+                              backgroundColor: Colors.purple,
+                              onEdit: () {
+                                showChangedTaskStatus('Progress',
+                                    inProgressTaskModel.data?[index].sId ?? '',
+                                    () {
+                                  inProgressTasks();
+                                });
+                              },
+                              onDelete: () {
+                                deleteTask(
+                                    inProgressTaskModel.data?[index].sId);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
@@ -124,9 +126,11 @@ class _InprogressTaskScreenState extends State<InprogressTaskScreen> {
         backgroundColor: Colors.green,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddNewTaskScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddNewTaskScreen(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),

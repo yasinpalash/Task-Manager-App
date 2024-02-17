@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-
 import '../../data/network-utils.dart';
 import '../utils/snackbar-message.dart';
 import '../utils/text-styles.dart';
@@ -9,6 +7,7 @@ import '../widgets/app-text-form-field.dart';
 import '../widgets/screen-Background-images.dart';
 import '../widgets/user-profile-widget.dart';
 import 'main-bottom-navbar.dart';
+
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({Key? key}) : super(key: key);
 
@@ -32,54 +31,52 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
             const UserProfileWidget(),
             Expanded(
               child: ScreenBackground(
-                  child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Add New Task',
-                          style: screenTitleTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        AppTextFormFieldWidget(
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'Add Subject';
-                              }
-                              return null;
-                            },
-                            hintText: 'Subject',
-                            controller: subjectController
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        AppTextFormFieldWidget(
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return 'Add subject description';
-                              }
-                              return null;
-                            },
-                            maxLine: 6,
-                            hintText: 'Description',
-                            controller: descriptionController
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        if (inProgress)
-                          const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        else
-                          AppElevatedButton(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Add New Task',
+                            style: screenTitleTextStyle,
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          AppTextFormFieldWidget(
+                              validator: (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Add Subject';
+                                }
+                                return null;
+                              },
+                              hintText: 'Subject',
+                              controller: subjectController),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AppTextFormFieldWidget(
+                              validator: (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Add subject description';
+                                }
+                                return null;
+                              },
+                              maxLine: 6,
+                              hintText: 'Description',
+                              controller: descriptionController),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          if (inProgress)
+                            const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          else
+                            AppElevatedButton(
                               child:
                                   const Icon(Icons.arrow_circle_right_outlined),
                               ontap: () async {
@@ -89,39 +86,46 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
                                   final result = await NetworkUtils().postMethod(
                                       'https://task.teamrabbil.com/api/v1/createTask',
-                                      //token: AuthUtils.token,
                                       body: {
                                         "title": subjectController.text.trim(),
-                                        "description": descriptionController.text.trim(),
+                                        "description":
+                                            descriptionController.text.trim(),
                                         "status": "New"
                                       });
                                   inProgress = false;
                                   setState(() {});
-                                  //log(result);
 
-                                  if(result != null && result['status'] == 'success'){
-                                     subjectController.clear();
-                                     descriptionController.clear();
-                                       if (mounted) {
-                                         showSnackBarMessage(context, 'Task added successfully!');
-                                         Navigator.pushAndRemoveUntil(context,
-                                           MaterialPageRoute(builder: (
-                                               context) => const MainBottomNavBar()), (
-                                               route) => false);
-                                       }
-
-                                  } else{
+                                  if (result != null &&
+                                      result['status'] == 'success') {
+                                    subjectController.clear();
+                                    descriptionController.clear();
                                     if (mounted) {
-                                      showSnackBarMessage(context, 'Task adding failed! Try again',true);
+                                      showSnackBarMessage(
+                                          context, 'Task added successfully!');
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const MainBottomNavBar()),
+                                          (route) => false);
+                                    }
+                                  } else {
+                                    if (mounted) {
+                                      showSnackBarMessage(
+                                          context,
+                                          'Task adding failed! Try again',
+                                          true);
                                     }
                                   }
                                 }
-                              })
-                      ],
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              )),
+              ),
             )
           ],
         ),

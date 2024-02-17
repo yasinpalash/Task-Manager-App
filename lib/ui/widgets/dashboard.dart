@@ -12,7 +12,7 @@ class DashboardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
+      elevation: 3,
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../data/models/task-model.dart';
 import '../../data/network-utils.dart';
 import '../../data/urls.dart';
@@ -11,6 +9,7 @@ import '../widgets/dashboard.dart';
 import '../widgets/screen-Background-images.dart';
 import '../widgets/task-list-item.dart';
 import 'add-new-task-screen.dart';
+
 class NewTaskScreen extends StatefulWidget {
   const NewTaskScreen({Key? key}) : super(key: key);
 
@@ -36,33 +35,34 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
 
   Future<void> deleteTask(dynamic id) async {
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Delete!'),
-            content: const Text("Once delete, you won't be get it back"),
-            actions: [
-              OutlinedButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    inProgress = true;
-                    setState(() {});
-                    await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
-                    inProgress = false;
-                    setState(() {});
-                    getNewTasks();
-                    statusCount();
-                    statusCount();
-                  },
-                  child: const Text('Yes')),
-              OutlinedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('No')),
-            ],
-          );
-        });
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete!'),
+          content: const Text("Once delete, you won't be get it back"),
+          actions: [
+            OutlinedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  inProgress = true;
+                  setState(() {});
+                  await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
+                  inProgress = false;
+                  setState(() {});
+                  getNewTasks();
+                  statusCount();
+                  statusCount();
+                },
+                child: const Text('Yes')),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> getNewTasks() async {
@@ -70,7 +70,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     setState(() {});
     final response = await NetworkUtils()
         .getMethod('https://task.teamrabbil.com/api/v1/listTaskByStatus/New');
-
     if (response != null) {
       newTaskModel = TaskModel.fromJson(response);
     } else {
@@ -91,29 +90,27 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       count1 = "${getNewTaskModel.data?.length ?? 0}";
     });
 
-    final responseCancelTask = await NetworkUtils()
-        .getMethod('https://task.teamrabbil.com/api/v1/listTaskByStatus/Cancelled');
+    final responseCancelTask = await NetworkUtils().getMethod(
+        'https://task.teamrabbil.com/api/v1/listTaskByStatus/Cancelled');
     final getCaneTaskModel = TaskModel.fromJson(responseCancelTask);
     setState(() {
-      count2 = "${getCaneTaskModel.data?.length?? 0}";
+      count2 = "${getCaneTaskModel.data?.length ?? 0}";
     });
 
-    final responseCompletedTask = await NetworkUtils()
-        .getMethod('https://task.teamrabbil.com/api/v1/listTaskByStatus/Completed');
+    final responseCompletedTask = await NetworkUtils().getMethod(
+        'https://task.teamrabbil.com/api/v1/listTaskByStatus/Completed');
     final getCompletedTaskModel = TaskModel.fromJson(responseCompletedTask);
     setState(() {
       count3 = "${getCompletedTaskModel.data?.length ?? 0}";
     });
 
-    final responseProgressTask = await NetworkUtils()
-        .getMethod('https://task.teamrabbil.com/api/v1/listTaskByStatus/Progress');
+    final responseProgressTask = await NetworkUtils().getMethod(
+        'https://task.teamrabbil.com/api/v1/listTaskByStatus/Progress');
     final getProgressTaskModel = TaskModel.fromJson(responseProgressTask);
     setState(() {
       count4 = "${getProgressTaskModel.data?.length ?? 0}";
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,43 +148,45 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                 ],
               ),
               Expanded(
-                  child: inProgress
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () async {
-                            getNewTasks();
-                            statusCount();
+                child: inProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          getNewTasks();
+                          statusCount();
+                        },
+                        child: ListView.builder(
+                          itemCount: newTaskModel.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return TaskListItem(
+                              subject:
+                                  newTaskModel.data?[index].title ?? 'Unknown',
+                              description:
+                                  newTaskModel.data?[index].description ??
+                                      'Unknown',
+                              date: newTaskModel.data?[index].createdDate ??
+                                  'Unknown',
+                              type: 'New',
+                              backgroundColor: Colors.lightBlueAccent,
+                              onEdit: () {
+                                showChangedTaskStatus(
+                                    'New', newTaskModel.data?[index].sId ?? '',
+                                    () {
+                                  getNewTasks();
+                                  statusCount();
+                                  setState(() {});
+                                });
+                              },
+                              onDelete: () {
+                                deleteTask(newTaskModel.data?[index].sId);
+                              },
+                            );
                           },
-                          child: ListView.builder(
-                              itemCount: newTaskModel.data?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                return TaskListItem(
-                                  subject: newTaskModel.data?[index].title ??
-                                      'Unknown',
-                                  description:
-                                      newTaskModel.data?[index].description ??
-                                          'Unknown',
-                                  date: newTaskModel.data?[index].createdDate ??
-                                      'Unknown',
-                                  type: 'New',
-                                  backgroundColor: Colors.lightBlueAccent,
-                                  onEdit: () {
-                                    showChangedTaskStatus('New',
-                                        newTaskModel.data?[index].sId ?? '',
-                                        () {
-                                      getNewTasks();
-                                      statusCount();
-                                      setState(() {});
-                                    });
-                                  },
-                                  onDelete: () {
-                                    deleteTask(newTaskModel.data?[index].sId);
-                                  },
-                                );
-                              }),
-                        )),
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
@@ -202,4 +201,3 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 }
-

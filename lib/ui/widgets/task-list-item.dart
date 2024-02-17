@@ -44,16 +44,19 @@ class TaskListItem extends StatelessWidget {
             ),
             Row(
               children: [
-                Chip(
-                  label: Text(
-                    type,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Chip(
+                    label: Text(
+                      type,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16
+                      ),
 
+                    ),
+                    backgroundColor: backgroundColor,
                   ),
-                  backgroundColor: backgroundColor,
                 ),
                 const Spacer(),
                 IconButton(onPressed: onEdit, icon: const Icon(Icons.sticky_note_2_outlined), color: Colors.green,),

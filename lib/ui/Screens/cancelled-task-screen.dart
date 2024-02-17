@@ -27,28 +27,33 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
   }
 
   Future<void> deleteTask(dynamic id) async {
-    showDialog(context: context, builder: (context){
-
-      return AlertDialog(
-        title: const Text('Delete!'),
-        content: const Text("Once delete, you won't be get it back"),
-        actions: [
-          OutlinedButton(onPressed: () async {
-            Navigator.pop(context);
-            inProgress = true;
-            setState(() {});
-            await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
-            inProgress = false;
-            setState(() {});
-            cancelTasks();
-
-          }, child: const Text('Yes')),
-          OutlinedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text('No')),
-        ],
-      );
-    });
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete!'),
+          content: const Text("Once delete, you won't be get it back"),
+          actions: [
+            OutlinedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  inProgress = true;
+                  setState(() {});
+                  await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
+                  inProgress = false;
+                  setState(() {});
+                  cancelTasks();
+                },
+                child: const Text('Yes')),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No')),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> cancelTasks() async {
@@ -76,43 +81,43 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: inProgress
-                      ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                      : RefreshIndicator(
-                    onRefresh: () async {
-                      cancelTasks();
-                    },
-                    child: ListView.builder(
-                        itemCount: cancelledTaskModel.data?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return TaskListItem(
-                            subject:
-                            cancelledTaskModel.data?[index].title ??
-                                'Unknown',
-                            description: cancelledTaskModel
-                                .data?[index].description ??
-                                'Unknown',
-                            date: cancelledTaskModel
-                                .data?[index].createdDate ??
-                                'Unknown',
-                            type: 'Cancelled',
-                            backgroundColor: Colors.purple,
-                            onEdit: () {
-                              showChangedTaskStatus(
-                                  'Cancelled',
-                                  cancelledTaskModel.data?[index].sId ??
-                                      '', () {
-                                cancelTasks();
-                              });
-                            },
-                            onDelete: () {
-                              deleteTask(cancelledTaskModel.data?[index].sId);
-                            },
-                          );
-                        }),
-                  )),
+                child: inProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          cancelTasks();
+                        },
+                        child: ListView.builder(
+                          itemCount: cancelledTaskModel.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return TaskListItem(
+                              subject: cancelledTaskModel.data?[index].title ??
+                                  'Unknown',
+                              description:
+                                  cancelledTaskModel.data?[index].description ??
+                                      'Unknown',
+                              date:
+                                  cancelledTaskModel.data?[index].createdDate ??
+                                      'Unknown',
+                              type: 'Cancelled',
+                              backgroundColor: Colors.purple,
+                              onEdit: () {
+                                showChangedTaskStatus('Cancelled',
+                                    cancelledTaskModel.data?[index].sId ?? '',
+                                    () {
+                                  cancelTasks();
+                                });
+                              },
+                              onDelete: () {
+                                deleteTask(cancelledTaskModel.data?[index].sId);
+                              },
+                            );
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
@@ -121,9 +126,11 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
         backgroundColor: Colors.green,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddNewTaskScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddNewTaskScreen(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),

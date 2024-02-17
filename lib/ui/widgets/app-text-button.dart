@@ -19,14 +19,13 @@ class AppTextButton extends StatelessWidget {
       children: [
         Text(text1!),
         TextButton(
-            style: TextButton.styleFrom(
-                padding: EdgeInsets.zero
-            ),
-            onPressed: ontap,
-            child: Text(
-              text2!,
-              style: const TextStyle(color: Colors.green),
-            ))
+          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          onPressed: ontap,
+          child: Text(
+            text2!,
+            style: const TextStyle(color: Colors.green),
+          ),
+        )
       ],
     );
   }

@@ -3,8 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthUtils {
   static String? firstName, lastName, token, profilePic, mobile, email;
-
-  /// Save user authentication (information)
   static Future<void> saveUserData(String uFirstName, String uLastName,
       String uToken, String uProfilePic, String uMobile, String uEmail) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -22,7 +20,6 @@ class AuthUtils {
     email = uEmail;
   }
 
-  /// this is check function for really saved the user information or not (T/F)
   static Future<bool> checkLoginState() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString('token');
@@ -50,7 +47,7 @@ class AuthUtils {
     sharedPreferences.clear();
   }
 
-  static showBase64Image(base64Image){
+  static showBase64Image(base64Image) {
     UriData? data = Uri.parse(base64Image).data;
     Uint8List myImage = data!.contentAsBytes();
     return myImage;

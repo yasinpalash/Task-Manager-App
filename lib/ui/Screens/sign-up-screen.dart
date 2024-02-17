@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../data/network-utils.dart';
 import '../utils/snackbar-message.dart';
 import '../utils/text-styles.dart';
@@ -8,9 +7,9 @@ import '../widgets/app-text-button.dart';
 import '../widgets/app-text-form-field.dart';
 import '../widgets/screen-Background-images.dart';
 import 'loginScreen.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
-
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -105,47 +104,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )
                     else
                       AppElevatedButton(
-                          child: const Icon(Icons.arrow_forward_ios),
-                          ontap: () async {
-                            if (formKey.currentState!.validate()) {
-                              inProgress = true;
-                              setState(() {});
-                              final result = await NetworkUtils().postMethod(
-                                  'https://task.teamrabbil.com/api/v1/registration',
-                                  body: {
-                                    'email': emailTextController.text.trim(),
-                                    'mobile': mobileTextController.text.trim(),
-                                    'password': passwordTextController.text,
-                                    'firstName':
-                                        firstNameTextController.text.trim(),
-                                    'lastName':
-                                        lastNameTextController.text.trim(),
-                                  });
+                        child: const Icon(Icons.arrow_forward_ios),
+                        ontap: () async {
+                          if (formKey.currentState!.validate()) {
+                            inProgress = true;
+                            setState(() {});
+                            final result = await NetworkUtils().postMethod(
+                                'https://task.teamrabbil.com/api/v1/registration',
+                                body: {
+                                  'email': emailTextController.text.trim(),
+                                  'mobile': mobileTextController.text.trim(),
+                                  'password': passwordTextController.text,
+                                  'firstName':
+                                      firstNameTextController.text.trim(),
+                                  'lastName':
+                                      lastNameTextController.text.trim(),
+                                });
 
-                              inProgress = false;
-                              setState(() {});
-                              if (result != null && result['status'] == 'success') {
-                                emailTextController.clear();
-                                mobileTextController.clear();
-                                passwordTextController.clear();
-                                firstNameTextController.clear();
-                                lastNameTextController.clear();
+                            inProgress = false;
+                            setState(() {});
+                            if (result != null &&
+                                result['status'] == 'success') {
+                              emailTextController.clear();
+                              mobileTextController.clear();
+                              passwordTextController.clear();
+                              firstNameTextController.clear();
+                              lastNameTextController.clear();
 
-                                if (mounted) {
-                                  showSnackBarMessage(context, 'Registration Successfull !');
-                                  Navigator.pushAndRemoveUntil(context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const LoginScreen()), (
-                                          route) => false);
-                                }
-                              } else {
-                                if (mounted) {
-                                  showSnackBarMessage(
-                                      context, 'Registration Failed !', true);
-                                }
+                              if (mounted) {
+                                showSnackBarMessage(
+                                    context, 'Registration Successfull !');
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginScreen()),
+                                    (route) => false);
+                              }
+                            } else {
+                              if (mounted) {
+                                showSnackBarMessage(
+                                    context, 'Registration Failed !', true);
                               }
                             }
-                          }),
+                          }
+                        },
+                      ),
                     const SizedBox(height: 16),
                     AppTextButton(
                       text1: 'Have account?',

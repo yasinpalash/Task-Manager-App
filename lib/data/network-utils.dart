@@ -2,12 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../app.dart';
 import '../ui/Screens/loginScreen.dart';
 import '../ui/utils/auth-utils.dart';
 class NetworkUtils {
-  /// Api Get Method
+
   Future<dynamic> getMethod(String url,
       {Map<String, String>? body, VoidCallback? onUnAuthorize}) async {
     try {
@@ -32,7 +31,7 @@ class NetworkUtils {
     }
   }
 
-  /// Api Post Method
+
   Future<dynamic> postMethod(String url,
       {Map<String, String>? body, VoidCallback? onUnAuthorize}) async {
     try {
@@ -59,7 +58,6 @@ class NetworkUtils {
     }
   }
 
-  /// Api delete Method
   Future<dynamic> deleteMethod(String url,
       {Map<String, String>? body, VoidCallback? onUnAuthorize}) async {
     try {

@@ -26,32 +26,34 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
   }
 
   Future<void> deleteTask(dynamic id) async {
-    showDialog(context: context, builder: (context){
-
-      return AlertDialog(
-        title: const Text('Delete !'),
-        content: const Text("Once delete, you won't be get it back"),
-        actions: [
-          OutlinedButton(onPressed: () async {
-            Navigator.pop(context);
-            inProgress = true;
-            setState(() {});
-            await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
-            inProgress = false;
-            setState(() {});
-            completedNewTasks();
-
-          }, child: const Text('Yes')),
-          OutlinedButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: const Text('No')),
-
-        ],
-
-      );
-
-    });
-
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete !'),
+          content: const Text("Once delete, you won't be get it back"),
+          actions: [
+            OutlinedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  inProgress = true;
+                  setState(() {});
+                  await NetworkUtils().deleteMethod(Urls.deleteTaskUrl(id));
+                  inProgress = false;
+                  setState(() {});
+                  completedNewTasks();
+                },
+                child: const Text('Yes')),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> completedNewTasks() async {
@@ -79,43 +81,43 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: inProgress
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () async {
-                            completedNewTasks();
+                child: inProgress
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          completedNewTasks();
+                        },
+                        child: ListView.builder(
+                          itemCount: completedTaskModel.data?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            return TaskListItem(
+                              subject: completedTaskModel.data?[index].title ??
+                                  'Unknown',
+                              description:
+                                  completedTaskModel.data?[index].description ??
+                                      'Unknown',
+                              date:
+                                  completedTaskModel.data?[index].createdDate ??
+                                      'Unknown',
+                              type: 'Completed',
+                              backgroundColor: Colors.green,
+                              onEdit: () {
+                                showChangedTaskStatus('Completed',
+                                    completedTaskModel.data?[index].sId ?? '',
+                                    () {
+                                  completedNewTasks();
+                                });
+                              },
+                              onDelete: () {
+                                deleteTask(completedTaskModel.data?[index].sId);
+                              },
+                            );
                           },
-                          child: ListView.builder(
-                              itemCount: completedTaskModel.data?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                return TaskListItem(
-                                  subject:
-                                      completedTaskModel.data?[index].title ??
-                                          'Unknown',
-                                  description: completedTaskModel
-                                          .data?[index].description ??
-                                      'Unknown',
-                                  date: completedTaskModel
-                                          .data?[index].createdDate ??
-                                      'Unknown',
-                                  type: 'Completed',
-                                  backgroundColor: Colors.green,
-                                  onEdit: () {
-                                    showChangedTaskStatus(
-                                        'Completed',
-                                        completedTaskModel.data?[index].sId ??
-                                            '', () {
-                                      completedNewTasks();
-                                    });
-                                  },
-                                  onDelete: () {
-                                    deleteTask(completedTaskModel.data?[index].sId);
-                                  },
-                                );
-                              }),
-                        )),
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
@@ -124,9 +126,11 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
         backgroundColor: Colors.green,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddNewTaskScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddNewTaskScreen(),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),
