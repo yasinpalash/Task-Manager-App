@@ -10,9 +10,4 @@ This is a Flutter-based mobile application for task management, compatible with 
 - REST API Integration: The app communicates with a backend server using REST API for data management.
 ## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Artboard – 1](https://github.com/yasinpalash/Task-Manager-App/assets/145049322/a32d1153-8d92-4a14-9085-ea47b19449c4)
