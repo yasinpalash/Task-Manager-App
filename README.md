@@ -2,8 +2,8 @@
 
 This is a Flutter-based mobile application for task management, compatible with both Android and iOS platforms. It allows users to login using their Gmail accounts, manage tasks, view tasks in different statuses, and interact with various features such as task merging, editing, and deletion.
 ## Features
-Gmail Login: Users can sign in to the app using their Gmail accounts.
-Task Management: Users can create, edit, and delete tasks.
+- Gmail Login: Users can sign in to the app using their Gmail accounts.
+- Task Management: Users can create, edit, and delete tasks.
 Task Statuses: Tasks can be viewed in different statuses such as "cancel", "progress", and "complete".
 Task Categories: Tasks are organized into different categories for easy navigation.
 Profile Management: Users have profiles where they can upload and edit their profile pictures.
