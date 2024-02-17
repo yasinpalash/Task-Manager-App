@@ -9,5 +9,8 @@ This is a Flutter-based mobile application for task management, compatible with 
 - Profile Management: Users have profiles where they can upload and edit their profile pictures.
 - REST API Integration: The app communicates with a backend server using REST API for data management.
 ## Screenshots
-
 ![Artboard – 1](https://github.com/yasinpalash/Task-Manager-App/assets/145049322/a32d1153-8d92-4a14-9085-ea47b19449c4)
+
+## AppVideo
+https://github.com/yasinpalash/Task-Manager-App/assets/145049322/247a4826-4d3a-4f07-85e9-a0b8b4f39601
+
